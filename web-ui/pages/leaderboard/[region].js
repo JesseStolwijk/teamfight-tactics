@@ -6,9 +6,8 @@ const Leaderboard = ({ leaderboard }) => {
   const { region: regionSlug } = router.query;
   const currentRegion = regions.find((r) => r.shortHand === regionSlug); // TODO MOVE TO SERVER PROPS
   return (
-    <div>
-      <h1>{currentRegion?.displayName}</h1>
-      <select
+    <div className="bg-black text-white p-8">
+      {/* <select
         name="region"
         id="region"
         value={currentRegion?.shortHand}
@@ -17,11 +16,17 @@ const Leaderboard = ({ leaderboard }) => {
         {regions.map((r) => (
           <option value={r.shortHand}>{r.displayName}</option>
         ))}
-      </select>
-      <ul>
-        {leaderboard?.map((entry, index) => (
-          <li>
-            {index + 1} {entry.summonerName} {entry.leaguePoints} {regionSlug === "world" ? entry.region : null}
+      </select> */}
+      <div className="pb-8">
+        <h1 className="text-4xl">Leaderboard {currentRegion?.displayName}</h1>
+      </div>
+      <ul className="grid grid-cols-1 divide-y divide-white">
+        {leaderboard?.flatMap((entry, index) => (
+          <li className="flex p-4 items-center">
+            <p className="text-2xl font-bold w-24">{index + 1}</p>{" "}
+            <p className="text-2xl font-bold flex-1">{entry.summonerName}</p>
+            <p className="text-l font-bold flex-1 justify-end">{entry.leaguePoints} LP</p>{" "}
+            <p className="text-xl font-bold flex-auto justify-end">{regionSlug === "world" ? entry.region : null}</p>
           </li>
         ))}
       </ul>
@@ -68,8 +73,8 @@ export const getStaticProps = async (ctx) => {
 const regions = [
   { displayName: "Worldwide", shortHand: "world", platformId: "world" },
   { displayName: "Brazil", shortHand: "br", platformId: "br1" },
-  { displayName: "Europe North East", shortHand: "eune", platformId: "eun1" },
-  { displayName: "Europe West", shortHand: "euw", platformId: "euw1" },
+  { displayName: "North East Europe", shortHand: "eune", platformId: "eun1" },
+  { displayName: "West-Europe", shortHand: "euw", platformId: "euw1" },
   { displayName: "Japan", shortHand: "jp", platformId: "jp1" },
   { displayName: "Korea", shortHand: "kr", platformId: "kr" },
   { displayName: "Latin Amrica", shortHand: "la", platformId: "la1" },
