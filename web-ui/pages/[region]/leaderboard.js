@@ -2,7 +2,7 @@ import React from "react";
 import { useRouter } from "next/router";
 import NavigationBar from "../../components/navigation-bar";
 import Link from "next/link";
-import { regions } from "../../components/regions";
+import { regions, regionToPlatform } from "../../components/regions";
 
 const Leaderboard = ({ leaderboard }) => {
   const router = useRouter();
@@ -52,17 +52,13 @@ const Leaderboard = ({ leaderboard }) => {
 };
 
 const fetchLeaderboard = async (region) => {
-  console.log(`Fetching: https://${toRegionToPlatform(region)}.api.riotgames.com/tft/league/v1/challenger`);
-  const res = await fetch(`https://${toRegionToPlatform(region)}.api.riotgames.com/tft/league/v1/challenger`, {
+  console.log(`Fetching: https://${regionToPlatform(region)}.api.riotgames.com/tft/league/v1/challenger`);
+  const res = await fetch(`https://${regionToPlatform(region)}.api.riotgames.com/tft/league/v1/challenger`, {
     headers: { "X-Riot-Token": "RGAPI-ce2b6f56-1f0e-42d8-ac39-5087a478852b" }, // TODO EXTACT SECRET
   });
 
   const json = await res.json();
   return { ...json, entries: json.entries.map((entry) => ({ ...entry, region: region })) };
-};
-
-const toRegionToPlatform = (region) => {
-  return regions.find((r) => r.shortHand === region)?.platformId;
 };
 
 export const getStaticProps = async (ctx) => {

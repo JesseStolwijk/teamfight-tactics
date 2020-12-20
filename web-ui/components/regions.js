@@ -12,3 +12,7 @@ export const regions = [
 ];
 
 export const regionsWithoutWorld = regions.filter((r) => r.shortHand !== "world");
+
+export const regionToPlatform = (region) => {
+  return regions.find((r) => r.shortHand === region)?.platformId;
+};
