@@ -1,13 +1,18 @@
 import React from "react";
 import { useRouter } from "next/router";
+import NavigationBar from "../../components/navigation-bar";
+import Link from "next/link";
+import { regions } from "../../components/regions";
 
 const Leaderboard = ({ leaderboard }) => {
   const router = useRouter();
   const { region: regionSlug } = router.query;
   const currentRegion = regions.find((r) => r.shortHand === regionSlug); // TODO MOVE TO SERVER PROPS
   return (
-    <div className="bg-black text-white p-8">
-      {/* <select
+    <div>
+      <NavigationBar />
+      <div className="bg-black text-white p-8">
+        {/* <select
         name="region"
         id="region"
         value={currentRegion?.shortHand}
@@ -17,19 +22,31 @@ const Leaderboard = ({ leaderboard }) => {
           <option value={r.shortHand}>{r.displayName}</option>
         ))}
       </select> */}
-      <div className="pb-8">
-        <h1 className="text-4xl">Leaderboard {currentRegion?.displayName}</h1>
+        {/* <div className="pb-8">
+          <h1 className="text-4xl">Leaderboard {currentRegion?.displayName}</h1>
+        </div> */}
+        <ul className="grid grid-cols-1 divide-y divide-white">
+          {leaderboard?.flatMap((entry, index) => (
+            <Link
+              href={{
+                pathname: "/[region]/players/[playerName]",
+                query: { region: entry.region, playerName: entry.summonerName },
+              }}
+            >
+              <li className="flex p-4 items-center cursor-pointer hover:bg-indigo-700">
+                <p className="text-2xl font-semibold w-24">{index + 1}</p>{" "}
+                <p className="text-2xl font-bold flex-1">{entry.summonerName}</p>
+                <div className="flex-auto justify-end">
+                  <p className="text-l font-bold inline">{entry.leaguePoints}</p> <p className="text-l inline">LP</p>
+                </div>
+                <p className="text-l font-bold flex-auto justify-end">
+                  {regionSlug === "world" ? entry.region.toUpperCase() : null}
+                </p>
+              </li>
+            </Link>
+          ))}
+        </ul>
       </div>
-      <ul className="grid grid-cols-1 divide-y divide-white">
-        {leaderboard?.flatMap((entry, index) => (
-          <li className="flex p-4 items-center">
-            <p className="text-2xl font-bold w-24">{index + 1}</p>{" "}
-            <p className="text-2xl font-bold flex-1">{entry.summonerName}</p>
-            <p className="text-l font-bold flex-1 justify-end">{entry.leaguePoints} LP</p>{" "}
-            <p className="text-xl font-bold flex-auto justify-end">{regionSlug === "world" ? entry.region : null}</p>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 };
@@ -69,19 +86,6 @@ export const getStaticProps = async (ctx) => {
   const json = await fetchLeaderboard(ctx.params.region);
   return { props: { leaderboard: json.entries.sort((a, b) => b.leaguePoints - a.leaguePoints) }, revalidate: 60 };
 };
-
-const regions = [
-  { displayName: "Worldwide", shortHand: "world", platformId: "world" },
-  { displayName: "Brazil", shortHand: "br", platformId: "br1" },
-  { displayName: "North East Europe", shortHand: "eune", platformId: "eun1" },
-  { displayName: "West-Europe", shortHand: "euw", platformId: "euw1" },
-  { displayName: "Japan", shortHand: "jp", platformId: "jp1" },
-  { displayName: "Korea", shortHand: "kr", platformId: "kr" },
-  { displayName: "Latin Amrica", shortHand: "la", platformId: "la1" },
-  { displayName: "North America", shortHand: "na", platformId: "na1" },
-  { displayName: "Oceania", shortHand: "oce", platformId: "oc1" },
-  { displayName: "Turkey", shortHand: "tr", platformId: "tr1" },
-];
 
 export async function getStaticPaths() {
   return {

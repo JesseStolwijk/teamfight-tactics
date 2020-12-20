@@ -1,65 +1,59 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Link from "next/link";
+import { useState } from "react";
+import NavigationBar from "../components/navigation-bar";
+import { regionsWithoutWorld } from "../components/regions";
 
 export default function Home() {
+  const [selectedRegion, setSelectedRegion] = useState("euw");
+  const [summonerName, setSummonerName] = useState("");
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <div className="border-white border bg-black text-white grid grid-rows-2 h-screen">
+      <div className="border-white border p-4">
+        <h2 className="text-2xl font-extrabold">TFT trackr</h2>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+        <div className="flex justify-center py-32">
+          <div className="flex">
+            <select
+              id="region"
+              className="bg-black border border-white"
+              value={selectedRegion}
+              defaultValue={selectedRegion}
+              onChange={(e) => setSelectedRegion(e.target.value)}
+            >
+              {regionsWithoutWorld.map((region) => (
+                <option value={region.shortHand}>{region.shortHand.toUpperCase()}</option>
+              ))}
+            </select>
+            <input
+              value={summonerName}
+              onChange={(e) => setSummonerName(e.target.value)}
+              className="flex-1 bg-black p-4 border-white border"
+              placeholder="Summoner name"
+            />
+            <Link
+              href={{
+                pathname: "/[region]/players/[playerName]",
+                query: { region: selectedRegion, playerName: summonerName || "empty" },
+              }}
+            >
+              <div className="border-white border p-4 hover:bg-yellow-400 font-bold cursor-pointer">Search</div>
+            </Link>
+          </div>
         </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+      </div>
+      <div className="grid grid-cols-2">
+        <Link href="/euw/leaderboard">
+          <div className="border-white border p-4 hover:bg-green-500 cursor-pointer">
+            <p className="text-2xl font-extrabold">Leaderboard</p>
+          </div>
+        </Link>
+        <Link href="/euw/meta">
+          <div className="border-white border p-4 hover:bg-indigo-700 cursor-pointer">
+            <p className="text-2xl font-extrabold">Meta report</p>
+          </div>
+        </Link>
+      </div>
     </div>
-  )
+  );
 }
