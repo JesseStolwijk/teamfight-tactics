@@ -12,6 +12,7 @@ const Player = ({ player }) => {
   const { region, name } = router.query;
 
   const { data, error } = useSWR(createUrl(region, name), fetcher, player);
+  const { data: matches, error: matchesError } = useSWR(createUrl(region, name) + "/matches", fetcher);
 
   if (error || data?.message)
     return (
@@ -49,6 +50,7 @@ const Player = ({ player }) => {
       <p>Wins {data.wins}</p>
       <p>Losses {data.losses}</p>
       <p>Updated at {toHumanReadableTimestamp(data.updatedAt)}</p>
+      <pre>{JSON.stringify(matches, null, 2)}</pre>
     </MainLayout>
   );
 };

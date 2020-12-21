@@ -1,4 +1,4 @@
-import { regionToPlatform } from "../components/regions";
+import { regionToPlatform, regionToRouting } from "../components/regions";
 import { RIOT_API_KEY } from "./secrets";
 
 export const fetchPlayer = async (region, name) => {
@@ -22,4 +22,15 @@ export const fetchPlayer = async (region, name) => {
 
   console.log("Fetched player: ", player);
   return player;
+};
+
+export const fetchMatchHistory = async (region, puuid) => {
+  const res = await fetch(
+    `https://${regionToRouting(region)}.api.riotgames.com/tft/match/v1/matches/by-puuid/${puuid}/ids?count=999999`,
+    {
+      headers: { "X-Riot-Token": RIOT_API_KEY }, // TODO EXTACT SECRET
+    }
+  );
+
+  return await res.json();
 };
