@@ -4,6 +4,7 @@ import Link from "next/link";
 import { regions, regionToPlatform } from "../../components/regions";
 import MainLayout from "../../components/main-layout";
 import { fetcher } from "../../backend/fetcher";
+import { BACKEND_BASE_URL } from "../../backend/config";
 
 const Leaderboard = ({ leaderboard }) => {
   const router = useRouter();
@@ -58,7 +59,7 @@ const Leaderboard = ({ leaderboard }) => {
 // TODO: use getStaticProps and getStaticPaths to statically generate the leaderboard
 // Note that you need a direct connection to dynamodb to do this
 export const getServerSideProps = async (ctx) => {
-  const leaderboard = await fetcher(`http://localhost:3000/api/regions/${ctx.params.region}/leaderboard`);
+  const leaderboard = await fetcher(`${BACKEND_BASE_URL}/api/regions/${ctx.params.region}/leaderboard`);
   return { props: { leaderboard } };
 };
 

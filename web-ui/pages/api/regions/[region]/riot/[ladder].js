@@ -1,5 +1,5 @@
 import { batchWrite, saveSummoners } from "../../../../../backend/dynamodb";
-import { RIOT_API_KEY } from "../../../../../backend/secrets";
+import { RIOT_API_KEY } from "../../../../../backend/config";
 import { regionToPlatform } from "../../../../../components/regions";
 
 export default async (req, res) => {

@@ -1,5 +1,5 @@
 import { regionToPlatform, regionToRouting } from "../components/regions";
-import { RIOT_API_KEY } from "./secrets";
+import { RIOT_API_KEY } from "./config";
 
 export const fetchPlayer = async (region, name) => {
   const res = await fetch(

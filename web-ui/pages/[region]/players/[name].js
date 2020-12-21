@@ -4,10 +4,11 @@ import { fetcher } from "../../../backend/fetcher";
 import MainLayout from "../../../components/main-layout";
 import Image from "next/image";
 import match from "../../../backend/match.json";
+import { BACKEND_BASE_URL } from "../../../backend/config";
 
 const { default: NavigationBar } = require("../../../components/navigation-bar");
 
-const createUrl = (region, name) => `http://localhost:3000/api/regions/${region}/summoners/${name}`;
+const createUrl = (region, name) => `${BACKEND_BASE_URL}/api/regions/${region}/summoners/${name}`;
 
 const currentId = "hxJbBzhGHfZQd9kdYX_LnOYmHiIb3e4OtJUzf7tdYj3CnYyAO4EOt02nG09cEzWOvpdUKlw0lSXQMQ";
 
