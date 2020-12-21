@@ -18,7 +18,7 @@ const dynamoDBConfig =
 AWS.config.update(dynamoDBConfig);
 
 // Create DynamoDB service object
-var ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
+export const ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
 
 export const saveSummoners = async (region, summoners) => {
   console.log(summoners);
