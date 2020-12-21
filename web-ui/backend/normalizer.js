@@ -1,3 +1,3 @@
 export const normalizeSummonerName = (summonerName) => {
-  return summonerName.toLowerCase().replace(" ", "");
+  return summonerName.normalize("NFC").toLowerCase().replace(" ", "");
 };
