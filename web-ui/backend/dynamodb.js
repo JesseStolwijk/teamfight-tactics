@@ -3,7 +3,19 @@ import { normalizeSummonerName } from "./normalizer";
 // Load the AWS SDK for Node.js
 var AWS = require("aws-sdk");
 // Set the region
-AWS.config.update({ region: "eu-west-1" });
+const dynamoDBConfig =
+  process.env.VERCEL === "1"
+    ? {
+        region: "eu-west-1",
+        accessKeyId: process.env.ACCESS_KEY,
+        secretAccessKey: process.env.SECRET_KEY,
+        params: {
+          TableName: process.env.TABLE_NAME,
+        },
+      }
+    : { region: "eu-west-1" };
+
+AWS.config.update(dynamoDBConfig);
 
 // Create DynamoDB service object
 var ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
