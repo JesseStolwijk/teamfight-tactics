@@ -1,4 +1,4 @@
-import { saveSummoners } from "../../../../../backend/dynamodb";
+import { batchWrite, saveSummoners } from "../../../../../backend/dynamodb";
 import { RIOT_API_KEY } from "../../../../../backend/secrets";
 import { regionToPlatform } from "../../../../../components/regions";
 
@@ -17,23 +17,27 @@ export default async (req, res) => {
 
   await saveSummoners(region, leaderboard);
 
-  // await ddb
-  //   .batchWriteItem({
-  //     RequestItems: {
-  //       tft: [
-  //         {
-  //           PutRequest: {
-  //             Item: {
-  //               partition_key: { S: `r:${region}-tier:challenger` },
-  //               created_at: { S: "123" },
-  //               leaderboard: { L: leaderboard.map((item) => ({ M: item.PutRequest.Item })) },
-  //             },
-  //           },
-  //         },
-  //       ],
-  //     },
-  //   })
-  //   .promise();
+  await batchWrite(
+    leaderboard.map((entry) => ({
+      PutRequest: {
+        Item: {
+          partition_key: { S: `r:${region}-l:${ladder}` },
+          created_at: { N: entry.position.toString() },
+          summonerName: { S: entry.summonerName },
+          // puuid: { S: entry.puuid },
+          leaguePoints: { N: entry.leaguePoints.toString() },
+          wins: { N: entry.wins.toString() },
+          losses: { N: entry.losses.toString() },
+          region: { S: region },
+          summonerId: { S: entry.summonerId },
+          tier: { S: entry.tier },
+          rank: { S: entry.rank },
+          position: { N: entry.position.toString() },
+          updatedAt: { N: Date.now().toString() },
+        },
+      },
+    }))
+  );
 
   res.statusCode = 200;
   res.json({ message: "success" });

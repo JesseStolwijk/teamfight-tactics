@@ -9,14 +9,15 @@ AWS.config.update({ region: "eu-west-1" });
 var ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
 
 export const saveSummoners = async (region, summoners) => {
+  console.log(summoners);
   console.log("Store '" + summoners.length + "' summoners in the database");
   const summonerPutRequests = summoners.map((summoner) => ({
     PutRequest: {
       Item: {
         partition_key: { S: `r:${region}-s:${normalizeSummonerName(summoner.summonerName)}` },
-        created_at: { S: "empty" }, //entry.rank.toString() },
+        created_at: { N: "123" }, //entry.rank.toString() },
         summonerName: { S: summoner.summonerName },
-        puuid: { S: summoner.puuid },
+        puuid: summoner.puuid ? { S: summoner.puuid } : undefined,
         leaguePoints: { N: summoner.leaguePoints.toString() },
         wins: { N: summoner.wins.toString() },
         losses: { N: summoner.losses.toString() },
@@ -29,7 +30,11 @@ export const saveSummoners = async (region, summoners) => {
     },
   }));
 
-  const chunks = chunk(summonerPutRequests, 25).map((chunk) => ({
+  return await batchWrite(summonerPutRequests);
+};
+
+export const batchWrite = async (requests) => {
+  const chunks = chunk(requests, 25).map((chunk) => ({
     RequestItems: {
       tft: chunk,
     },
@@ -77,4 +82,18 @@ export const getSummoner = async (region, summonerName) => {
   } else {
     return null;
   }
+};
+
+export const getLeaderboard = async (region, ladder) => {
+  const params = {
+    ExpressionAttributeValues: {
+      ":p": { S: `r:${region}-l:${ladder}` },
+    },
+    KeyConditionExpression: "partition_key = :p",
+    TableName: "tft",
+  };
+
+  const data = await ddb.query(params).promise();
+
+  return data.Items.map(AWS.DynamoDB.Converter.unmarshall);
 };
