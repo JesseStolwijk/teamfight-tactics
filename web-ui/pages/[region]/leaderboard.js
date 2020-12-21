@@ -55,20 +55,11 @@ const Leaderboard = ({ leaderboard }) => {
   );
 };
 
-export const getStaticProps = async (ctx) => {
+// TODO: use getStaticProps and getStaticPaths to statically generate the leaderboard
+// Note that you need a direct connection to dynamodb to do this
+export const getServerSideProps = async (ctx) => {
   const leaderboard = await fetcher(`http://localhost:3000/api/regions/${ctx.params.region}/leaderboard`);
-  return { props: { leaderboard }, revalidate: 60 };
+  return { props: { leaderboard } };
 };
-
-export async function getStaticPaths() {
-  return {
-    paths: regions.map((region) => ({
-      params: {
-        region: region.shortHand,
-      },
-    })),
-    fallback: true,
-  };
-}
 
 export default Leaderboard;
