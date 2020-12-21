@@ -22,6 +22,7 @@ export const saveSummoners = async (region, summoners) => {
         summonerId: { S: summoner.summonerId },
         tier: { S: summoner.tier },
         rank: { S: summoner.rank },
+        updatedAt: { N: Date.now().toString() },
       },
     },
   }));

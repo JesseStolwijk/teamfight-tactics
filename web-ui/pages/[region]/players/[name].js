@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { fetcher } from "../../../backend/fetcher";
 
 const { default: NavigationBar } = require("../../../components/navigation-bar");
@@ -35,15 +35,28 @@ const Player = ({ player }) => {
           <h1 className="font-extrabold text-2xl">{data.summonerName}</h1>
           <p>{region.toUpperCase()}</p>
         </div>
+        <button
+          onClick={async () => {
+            await fetch(createUrl(region, name) + "/refresh");
+            mutate(createUrl(region, name));
+          }}
+        >
+          Refresh
+        </button>
         <p>
           {data.tier.slice(0, 1)}
           {data.tier.slice(1).toLowerCase()} {data.rank} - {data.leaguePoints} LP
         </p>
         <p>Wins {data.wins}</p>
         <p>Losses {data.losses}</p>
+        <p>Updated at {toHumanReadableTimestamp(data.updatedAt)}</p>
       </div>
     </div>
   );
+};
+
+const toHumanReadableTimestamp = (epoch) => {
+  return new Date(epoch).toLocaleString();
 };
 
 export async function getServerSideProps(ctx) {
