@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import { regionToPlatform } from "../../../components/regions";
 
 const { default: NavigationBar } = require("../../../components/navigation-bar");
 
@@ -23,26 +22,6 @@ const Player = ({ player }) => {
       </div>
     </div>
   );
-};
-
-const fetchPlayer = async (region, name) => {
-  const res = await fetch(
-    `https://${regionToPlatform(region)}.api.riotgames.com/tft/summoner/v1/summoners/by-name/${name}`,
-    {
-      headers: { "X-Riot-Token": "RGAPI-ce2b6f56-1f0e-42d8-ac39-5087a478852b" }, // TODO EXTACT SECRET
-    }
-  );
-
-  const json = await res.json();
-
-  const res2 = await fetch(
-    `https://${regionToPlatform(region)}.api.riotgames.com/tft/league/v1/entries/by-summoner/${json.id}`,
-    {
-      headers: { "X-Riot-Token": "RGAPI-ce2b6f56-1f0e-42d8-ac39-5087a478852b" }, // TODO EXTACT SECRET
-    }
-  );
-
-  return { ...json, ...(await res2.json())[0] };
 };
 
 Player.getInitialProps = async (ctx) => {
