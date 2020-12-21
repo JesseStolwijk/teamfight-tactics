@@ -1,9 +1,10 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
-import NavigationBar from "../components/navigation-bar";
 import { regionsWithoutWorld } from "../components/regions";
 
 export default function Home() {
+  const router = useRouter();
   const [selectedRegion, setSelectedRegion] = useState("euw");
   const [summonerName, setSummonerName] = useState("");
 
@@ -30,6 +31,11 @@ export default function Home() {
               onChange={(e) => setSummonerName(e.target.value)}
               className="flex-1 bg-black p-4 border-white border"
               placeholder="Summoner name"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  router.push(`/${selectedRegion}/players/${summonerName}`);
+                }
+              }}
             />
             <Link
               href={{
@@ -42,7 +48,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-2 ">
         <Link href="/euw/leaderboard">
           <div className="border-white border p-4 hover:bg-green-500 cursor-pointer">
             <p className="text-2xl font-extrabold">Leaderboard</p>
