@@ -30,27 +30,25 @@ const Player = ({ player }) => {
 
   return (
     <MainLayout>
-      <div className="border border-white p-4 m-4">
-        <div className="flex">
-          <h1 className="font-extrabold text-2xl">{data.summonerName}</h1>
-          <p>{region.toUpperCase()}</p>
-        </div>
-        <button
-          onClick={async () => {
-            await fetch(createUrl(region, name) + "/refresh");
-            mutate(createUrl(region, name));
-          }}
-        >
-          Refresh
-        </button>
-        <p>
-          {data.tier.slice(0, 1)}
-          {data.tier.slice(1).toLowerCase()} {data.rank} - {data.leaguePoints} LP
-        </p>
-        <p>Wins {data.wins}</p>
-        <p>Losses {data.losses}</p>
-        <p>Updated at {toHumanReadableTimestamp(data.updatedAt)}</p>
+      <div className="flex">
+        <h1 className="font-extrabold text-2xl">{data.summonerName}</h1>
+        <p>{region.toUpperCase()}</p>
       </div>
+      <button
+        onClick={async () => {
+          await fetch(createUrl(region, name) + "/refresh");
+          mutate(createUrl(region, name));
+        }}
+      >
+        Refresh
+      </button>
+      <p>
+        {data.tier.slice(0, 1)}
+        {data.tier.slice(1).toLowerCase()} {data.rank} - {data.leaguePoints} LP
+      </p>
+      <p>Wins {data.wins}</p>
+      <p>Losses {data.losses}</p>
+      <p>Updated at {toHumanReadableTimestamp(data.updatedAt)}</p>
     </MainLayout>
   );
 };

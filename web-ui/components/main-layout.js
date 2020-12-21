@@ -4,9 +4,9 @@ const { default: NavigationBar } = require("./navigation-bar");
 
 const MainLayout = ({ children }) => {
   return (
-    <div className="bg-black text-white  min-h-screen">
+    <div className="bg-black text-white min-h-screen">
       <NavigationBar />
-      <div>{children}</div>
+      <div className="container mx-auto py-16">{children}</div>
       <Footer />
     </div>
   );
