@@ -6,7 +6,7 @@ export default async (req, res) => {
   const region = "euw";
 
   const result = await fetch(`https://${regionToPlatform(region)}.api.riotgames.com/tft/league/v1/challenger`, {
-    headers: { "X-Riot-Token": RIOT_API_KEY }, // TODO EXTACT SECRET
+    headers: { "X-Riot-Token": RIOT_API_KEY },
   });
 
   const json = await result.json();
