@@ -4,15 +4,15 @@ import NavigationBar from "../../components/navigation-bar";
 import Link from "next/link";
 import { regions, regionToPlatform } from "../../components/regions";
 import { RIOT_API_KEY } from "../../backend/secrets";
+import MainLayout from "../../components/main-layout";
 
 const Leaderboard = ({ leaderboard }) => {
   const router = useRouter();
   const { region: regionSlug } = router.query;
   const currentRegion = regions.find((r) => r.shortHand === regionSlug); // TODO MOVE TO SERVER PROPS
   return (
-    <div>
-      <NavigationBar />
-      <div className="bg-black text-white p-8">
+    <MainLayout>
+      <div className="p-8">
         {/* <select
         name="region"
         id="region"
@@ -29,6 +29,7 @@ const Leaderboard = ({ leaderboard }) => {
         <ul className="grid grid-cols-1 divide-y divide-white">
           {leaderboard?.flatMap((entry, index) => (
             <Link
+              key={entry.summonerName}
               href={{
                 pathname: "/[region]/players/[playerName]",
                 query: { region: entry.region, playerName: entry.summonerName },
@@ -48,7 +49,7 @@ const Leaderboard = ({ leaderboard }) => {
           ))}
         </ul>
       </div>
-    </div>
+    </MainLayout>
   );
 };
 

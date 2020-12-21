@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
 import { fetcher } from "../../../backend/fetcher";
+import MainLayout from "../../../components/main-layout";
 
 const { default: NavigationBar } = require("../../../components/navigation-bar");
 
@@ -28,8 +29,7 @@ const Player = ({ player }) => {
     );
 
   return (
-    <div className="bg-black min-h-screen text-white">
-      <NavigationBar />
+    <MainLayout>
       <div className="border border-white p-4 m-4">
         <div className="flex">
           <h1 className="font-extrabold text-2xl">{data.summonerName}</h1>
@@ -51,7 +51,7 @@ const Player = ({ player }) => {
         <p>Losses {data.losses}</p>
         <p>Updated at {toHumanReadableTimestamp(data.updatedAt)}</p>
       </div>
-    </div>
+    </MainLayout>
   );
 };
 

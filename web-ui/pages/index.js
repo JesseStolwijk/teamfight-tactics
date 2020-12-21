@@ -48,9 +48,9 @@ export default function Home() {
             <p className="text-2xl font-extrabold">Leaderboard</p>
           </div>
         </Link>
-        <Link href="/euw/meta">
+        <Link href="/">
           <div className="border-white border p-4 hover:bg-indigo-700 cursor-pointer">
-            <p className="text-2xl font-extrabold">Meta report</p>
+            <p className="text-2xl font-extrabold line-through">Meta report (Soon TM)</p>
           </div>
         </Link>
       </div>
