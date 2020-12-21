@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { regions, regionToPlatform } from "../../components/regions";
+import { regions } from "../../components/regions";
 import MainLayout from "../../components/main-layout";
 import { fetcher } from "../../backend/fetcher";
 import { BACKEND_BASE_URL } from "../../backend/config";

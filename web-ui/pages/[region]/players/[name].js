@@ -8,7 +8,7 @@ import { BACKEND_BASE_URL } from "../../../backend/config";
 
 const { default: NavigationBar } = require("../../../components/navigation-bar");
 
-const createUrl = (region, name) => `${BACKEND_BASE_URL}/api/regions/${region}/summoners/${name}`;
+const createUrl = (region, name) => `/api/regions/${region}/summoners/${name}`;
 
 const currentId = "hxJbBzhGHfZQd9kdYX_LnOYmHiIb3e4OtJUzf7tdYj3CnYyAO4EOt02nG09cEzWOvpdUKlw0lSXQMQ";
 
@@ -151,7 +151,7 @@ const toHumanReadableTimestamp = (epoch) => {
 };
 
 export async function getServerSideProps(ctx) {
-  const player = await fetcher(createUrl(ctx.query.region, ctx.query.name));
+  const player = await fetcher(BACKEND_BASE_URL + createUrl(ctx.query.region, ctx.query.name));
   return { props: { player } };
 }
 
