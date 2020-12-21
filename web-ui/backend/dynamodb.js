@@ -1,3 +1,5 @@
+import { normalizeSummonerName } from "./normalizer";
+
 // Load the AWS SDK for Node.js
 var AWS = require("aws-sdk");
 // Set the region
@@ -10,7 +12,7 @@ export const saveSummoners = async (region, summoners) => {
   const summonerPutRequests = summoners.map((summoner) => ({
     PutRequest: {
       Item: {
-        partition_key: { S: `r:${region}-s:${summoner.summonerName}` },
+        partition_key: { S: `r:${region}-s:${normalizeSummonerName(summoner.summonerName)}` },
         created_at: { S: "empty" }, //entry.rank.toString() },
         summonerName: { S: summoner.summonerName },
         leaguePoints: { N: summoner.leaguePoints.toString() },

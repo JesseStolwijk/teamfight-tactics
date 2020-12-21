@@ -1,12 +1,12 @@
 import { saveSummoners } from "../../../../../backend/dynamodb";
+import { normalizeSummonerName } from "../../../../../backend/normalizer";
 import { fetchPlayer } from "../../../../../backend/riot-api";
 
-var AWS = require("aws-sdk");
-// Set the region
+const AWS = require("aws-sdk");
+
 AWS.config.update({ region: "eu-west-1" });
 
-// Create DynamoDB service object
-var ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
+const ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
 
 export default async (req, res) => {
   const { region, summonerName } = req.query;
@@ -21,7 +21,7 @@ export default async (req, res) => {
 
   const params = {
     ExpressionAttributeValues: {
-      ":p": { S: `r:${region}-s:${summonerName}` },
+      ":p": { S: `r:${region}-s:${normalizeSummonerName(summonerName)}` },
     },
     KeyConditionExpression: "partition_key = :p",
     TableName: "tft",
